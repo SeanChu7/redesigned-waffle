@@ -49,7 +49,7 @@ var player = function(r, x, y, dx, dy, c){
     var inc = function(){
     	x += dx;
     	y += dy;
-    	var speed = dx * dx + dy * dy;
+    	var speed = Math.pow(dx * dx + dy * dy,0.5);
 		if((x+r >= 800 && dx > 0) || (x <= r && dx < 0))
 		    dx *= -1;
 		if((y+r >= 700 && dy > 0) || (y <= r && dy < 0))
@@ -67,7 +67,7 @@ var player = function(r, x, y, dx, dy, c){
 
 	    vimg.appendChild(tail);
 	    tails.push(tail);
-	    if(tails.length>50){
+	    if(tails.length>100/speed){
 	    	vimg.removeChild(tails[0]);
 	    	tails.shift();
 	    }}
