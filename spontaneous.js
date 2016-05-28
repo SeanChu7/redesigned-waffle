@@ -1,8 +1,9 @@
 
 var vimg = document.getElementById("vimg")
+var p1 = document.createElementNS("http://www.w3.org/2000/svg","circle")
+var p2 = document.createElementNS("http://www.w3.org/2000/svg","circle")
 var makeP1P2 = function(){
-    var p1 = document.createElementNS("http://www.w3.org/2000/svg","circle")
-    var p2 = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    
 
     p1.setAttribute("cx", 750);
     p1.setAttribute("cy", 650);
@@ -21,9 +22,8 @@ var makeP1P2 = function(){
 }
 
 console.log(makeP1P2())
-
+var pillars = []
 var makeLv1 = function(){
-    var pillars = []
     var x=100;
     var y=150;
     while (y < 700){
@@ -44,6 +44,27 @@ var makeLv1 = function(){
 	x=100;
     }
 }
+var detect = function(){
+    for(i=0;i<pillars.length;i++){
+	player2X=p2.getAttribute("cx")
+	player2Y=p2.getAttribute("cy")
+
+	pillarX=pillars[i].getAttribute("cx")
+	pillarY=pillars[i].getAttribute("cy")
+
+	var distance = Math.pow(Math.pow(player2X - pillarX,2)+Math.pow(player2Y - pillarY,2), .5)
+	console.log(distance)
+	if (distance <= 150){
+	    console.log("hello")
+	    pillars[i].setAttribute("fill","blue");
+	}
+	else{
+	    if (pillars[i].getAttribute("fill") == "blue"){
+		pillars[i].setAttribute("fill","green")
+	    }
+	}
+    }
+}
 
 var intervalID;
 var x = 50
@@ -53,7 +74,7 @@ var move = function(){
     p2.setAttribute("cy", 50)
     console.log(p2.getAttribute("cx"))
     x+=1
-    if (x%2 == 0){
+    if (x%4 == 0){
 	var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
 	temp.setAttribute("cx", x);
 	temp.setAttribute("cy", 50);
@@ -71,4 +92,5 @@ var move = function(){
 }
 
 makeLv1()
-intervalID = setInterval(move,10);
+intervalID = setInterval(move,5);
+var intervalID2 = setInterval(detect,5);
