@@ -1,32 +1,7 @@
-
 var vimg = document.getElementById("vimg")
-var p1 = document.createElementNS("http://www.w3.org/2000/svg","circle")
-var p2 = document.createElementNS("http://www.w3.org/2000/svg","circle")
 
-var nearP1 = []
-var nearP2 = []
-
-var makeP1P2 = function(){
-    
-
-    p1.setAttribute("cx", 750);
-    p1.setAttribute("cy", 650);
-    p1.setAttribute("r", 10);
-    p1.setAttribute("fill","red");
-    p1.setAttribute("stroke","black");
-
-    p2.setAttribute("cx", 50);
-    p2.setAttribute("cy", 50);
-    p2.setAttribute("r", 10);
-    p2.setAttribute("fill","blue");
-    p2.setAttribute("stroke","black");
-
-    vimg.appendChild(p1);
-    vimg.appendChild(p2);
-}
-
-console.log(makeP1P2())
-var pillars = []
+var players = []
+var pivots = []
 var makeLv1 = function(){
     var x=100;
     var y=150;
@@ -41,62 +16,96 @@ var makeLv1 = function(){
 	    temp.setAttribute("stroke","black");
 
 	    vimg.appendChild(temp);
-	    pillars.push(temp)
+	    pivots.push(temp)
 	    x+= 200;
 	    }
 	y+=200;
 	x=100;
     }
+
+    players.push(player(10, 750, 650, -1, 0, "blue"));
+    players.push(player(10, 50, 50, 1, 0, "red"));
 }
-var detect = function(){
-    for(i=0;i<pillars.length;i++){
-	player2X=p2.getAttribute("cx")
-	player2Y=p2.getAttribute("cy")
 
-	pillarX=pillars[i].getAttribute("cx")
-	pillarY=pillars[i].getAttribute("cy")
+var dist = function(x1,x2,y1,y2) {
+    return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+}
 
-	var distance = Math.pow(Math.pow(player2X - pillarX,2)+Math.pow(player2Y - pillarY,2), .5)
-	console.log(distance)
-	if (distance <= 150){
-	    console.log("hello")
-	    pillars[i].setAttribute("fill","blue");
-	    nearP2.push(pillars[i])
-	}
-	else{
-	    if (pillars[i].getAttribute("fill") == "blue"){
-		pillars[i].setAttribute("fill","green")
-		nearP2.splice(pillars[i])
-	    }
-	}
+var player = function(r, x, y, dx, dy, c){
+	var head = document.createElementNS("http://www.w3.org/2000/svg","circle");
+
+    head.setAttribute("cx", x);
+    head.setAttribute("cy", y);
+    head.setAttribute("r", r);
+    head.setAttribute("fill",c);
+    head.setAttribute("stroke","black");
+
+    var tails = [];
+    var spacing = 0;
+    vimg.appendChild(head);
+
+    var inc = function(){
+    	x += dx;
+    	y += dy;
+    	spacing++;
+    	head.setAttribute("cx", x);
+    	head.setAttribute("cy", y);
+    	if(spacing%4==0){
+    	var tail = document.createElementNS("http://www.w3.org/2000/svg","circle");
+	    tail.setAttribute("cx", x);
+	    tail.setAttribute("cy", y);
+	    tail.setAttribute("r", r);
+	    tail.setAttribute("fill",c);
+	    tail.setAttribute("stroke","black");
+
+	    vimg.appendChild(tail);
+	    tails.push(tail);
+	    if(tails.length>50){
+	    	vimg.removeChild(tails[0]);
+	    	tails.shift();
+	    }}
+    }
+    var detect = function(){
+    	for(i=0;i<pivots.length;i++){
+    		var px = pivots[i].getAttribute("cx");
+    		var py = pivots[i].getAttribute("cy");
+    		var d = dist(x,px,y,py);
+    		var inRange = [];
+    		console.log(y);
+    		if(d<=150){
+    			inRange.push(pivots[i]);
+    		}
+    		else{
+    			inRange.splice(pivots[i]);
+    		}
+    		var pMin;
+    		for(j=0;j<inRange.length;j++){
+    			if (!pMin||inRange[j].getAttribute("cx")<pMin.getAttribute("cx"))
+    				pMin = inRange[j];
+    		}
+    		if(pMin){
+    			pMin.setAttribute("fill",c);
+    		}
+    	}
+    }
+
+    return{
+    	inc:inc,
+    	detect:detect
     }
 }
 
-var intervalID;
-var x = 50
-var tails = []
 var move = function(){
-    p2.setAttribute("cx", x)
-    p2.setAttribute("cy", 50)
-    console.log(p2.getAttribute("cx"))
-    x+=1
-    if (x%4 == 0){
-	var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
-	temp.setAttribute("cx", x);
-	temp.setAttribute("cy", 50);
-	temp.setAttribute("r", 10);
-	temp.setAttribute("fill","blue");
-	temp.setAttribute("stroke","black");
-	
-	vimg.appendChild(temp)
-	tails.push(temp)
-    }
-    if (tails.length == 20){
-	vimg.removeChild(tails[0]);
-	tails.shift();
-    }
+	for(k=0;k<pivots.length;k++){
+		pivots[k].setAttribute("fill","green");
+	}
+	for(k=0;k<players.length;k++){
+		players[k].inc();
+		players[k].detect();
+	}
+
 }
 
 makeLv1()
+var intervalID;
 intervalID = setInterval(move,5);
-var intervalID2 = setInterval(detect,5);
