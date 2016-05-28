@@ -30,15 +30,15 @@ body{
     cursor: pointer;
 }
 
-/*.container{
+.container{
     display: inline-block;
     position: relative;
     width: 100%;
-    padding-bottom: 100%;
+    padding-bottom: 40%;
     vertical-align: middle; 
     overflow: hidden; 
 }
-*/
+
 svg{
     border: 1px solid white; 
     display: inline-block;
