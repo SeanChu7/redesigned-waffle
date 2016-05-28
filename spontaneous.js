@@ -23,8 +23,10 @@ var makeLv1 = function(){
 	x=100;
     }
 
-    players.push(player(10, 750, 650, -1, 0, "#01fffc"));
-    players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
+    players.push(player(10, 750, 650, Math.random()*2, Math.random()*2, "#01fffc"));
+    players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
+    players.push(player(10, 750, 50, Math.random()*2, Math.random()*2, "red"));
+    players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
 }
 
 var dist = function(x1,x2,y1,y2) {
@@ -47,6 +49,11 @@ var player = function(r, x, y, dx, dy, c){
     var inc = function(){
     	x += dx;
     	y += dy;
+    	var speed = dx * dx + dy * dy;
+		if((x+r >= 800 && dx > 0) || (x <= r && dx < 0))
+		    dx *= -1;
+		if((y+r >= 700 && dy > 0) || (y <= r && dy < 0))
+		    dy *= -1;
     	spacing++;
     	head.setAttribute("cx", x);
     	head.setAttribute("cy", y);
