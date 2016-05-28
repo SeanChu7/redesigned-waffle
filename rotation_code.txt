@@ -1,29 +1,41 @@
-variables: radius vector ( or just two doubles for x and y), r, theta, dtheta, v
+variables: radius vector x and y, r, theta, dtheta, v, new ball x, new ball y
 
-go through pivot array, if ball x and ball y within tether radius of any
-	radius vector = rv: <ball x - pivot x, ball y - pivot y>
+when a key is pressed:
+	go through pivot array, if ball x and ball y within tether radius of any
+	rvx = ball x - pivot x
+	rvy = ball y - pivot y
 	r = sqrt(rvx^2 + rvy^2)
-if more than 1 connection detected, connect to smallest r
+	if more than 1 connection detected, connect to smallest r
 
 ball vector = bv: <dx, dy>
 draw line between ball and pivot to show tethered
+
 theta = angle finder (rvx, rvy)
 
 cos alpha = (bvx*rvx + bvy*rvy)/(sqrt(bvx^2 + bvy^2)*sqrt(rvx^2+rvy^2))
 	//maybe (bvx*rvx + bvy*rvy) is enough?
 if cos alpha > 0 -> past pivot
+	draw dotted circle of path
 	v = dx^2 + dy^2
 	dtheta = v/r
 	if (ball y < pivot y && dx < 0) || (ball y > pivot y && dx > 0)
 		dtheta *= -1
 	theta += dtheta
 
-	ball x = r * cos theta + pivot x
-	ball y = r * sin theta + pivot y
+	new ball x = r * cos theta + pivot x
+	new ball y = r * sin theta + pivot y
+	dx = new ball x - ball x
+	dy = new ball y - ball y
+	ball x = new ball x
+	ball y = new ball y
+
 
 
 
 if cos alpha <= 0 -> not yet pivot   do nothing, dx and dy unchanged
+
+
+
 
 
 
