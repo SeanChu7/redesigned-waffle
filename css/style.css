@@ -7,12 +7,17 @@ body{
     background-color:#000000
 }
 
-h1{
-  font-family: Gtek; 
-  color:#F8F8FF;
+.title{
+    position: relative;
+    left: 40%;
+    font-family: Gtek; 
+    color:#F8F8FF;
 }
 
 .button{
+
+    position: relative;
+    left: 35%;
     background-color: #000000;
     border: 1;
     color: white;
@@ -38,6 +43,6 @@ svg{
     border: 1px solid white; 
     display: inline-block;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 2%;
+    left: 25%;
 }
