@@ -12,7 +12,7 @@ var makeLv1 = function(){
 	    temp.setAttribute("cx", x);
 	    temp.setAttribute("cy", y);
 	    temp.setAttribute("r", 6);
-	    temp.setAttribute("fill","green");
+	    temp.setAttribute("fill","#9ffd1c");
 	    temp.setAttribute("stroke","black");
 
 	    vimg.appendChild(temp);
@@ -23,8 +23,8 @@ var makeLv1 = function(){
 	x=100;
     }
 
-    players.push(player(10, 750, 650, -1, 0, "blue"));
-    players.push(player(10, 50, 50, 1, 0, "red"));
+    players.push(player(10, 750, 650, -1, 0, "#01fffc"));
+    players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
 }
 
 var dist = function(x1,x2,y1,y2) {
@@ -97,7 +97,7 @@ var player = function(r, x, y, dx, dy, c){
 
 var move = function(){
 	for(k=0;k<pivots.length;k++){
-		pivots[k].setAttribute("fill","green");
+		pivots[k].setAttribute("fill","#9ffd1c");
 	}
 	for(k=0;k<players.length;k++){
 		players[k].inc();
