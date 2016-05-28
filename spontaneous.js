@@ -61,9 +61,8 @@ var player = function(r, x, y, dx, dy, c){
     	var tail = document.createElementNS("http://www.w3.org/2000/svg","circle");
 	    tail.setAttribute("cx", x);
 	    tail.setAttribute("cy", y);
-	    tail.setAttribute("r", r);
+	    tail.setAttribute("r", r-2);
 	    tail.setAttribute("fill",c);
-	    tail.setAttribute("stroke","black");
 
 	    vimg.appendChild(tail);
 	    tails.push(tail);
@@ -72,13 +71,16 @@ var player = function(r, x, y, dx, dy, c){
 	    	tails.shift();
 	    }}
     }
+    var getTails = function(){
+    	return tails;
+    }
     var detect = function(){
     	for(i=0;i<pivots.length;i++){
     		var px = pivots[i].getAttribute("cx");
     		var py = pivots[i].getAttribute("cy");
     		var d = dist(x,px,y,py);
     		var inRange = [];
-    		console.log(y);
+    		//console.log(y);
     		if(d<=150){
     			inRange.push(pivots[i]);
     		}
@@ -98,7 +100,8 @@ var player = function(r, x, y, dx, dy, c){
 
     return{
     	inc:inc,
-    	detect:detect
+    	detect:detect,
+    	getTails:getTails
     }
 }
 
