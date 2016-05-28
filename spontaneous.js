@@ -2,6 +2,10 @@
 var vimg = document.getElementById("vimg")
 var p1 = document.createElementNS("http://www.w3.org/2000/svg","circle")
 var p2 = document.createElementNS("http://www.w3.org/2000/svg","circle")
+
+var nearP1 = []
+var nearP2 = []
+
 var makeP1P2 = function(){
     
 
@@ -57,10 +61,12 @@ var detect = function(){
 	if (distance <= 150){
 	    console.log("hello")
 	    pillars[i].setAttribute("fill","blue");
+	    nearP2.push(pillars[i])
 	}
 	else{
 	    if (pillars[i].getAttribute("fill") == "blue"){
 		pillars[i].setAttribute("fill","green")
+		nearP2.splice(pillars[i])
 	    }
 	}
     }
