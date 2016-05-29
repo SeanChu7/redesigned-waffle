@@ -8,6 +8,11 @@
     src: url(../fonts/Emotion.otf);
 }
 
+@font-face{
+    font-family: Scarre;
+    src: url(../fonts/Scarre.ttf);
+}
+
 body{
     background-color:#000000
 }
@@ -70,4 +75,19 @@ p{
     font-family: Emotion;
     font-size: 24px;
     
+}
+
+.scoreboard{
+    position: absolute;
+    left: 75%;
+    color: white;
+    border: 1px solid white;
+    font-size: 24px;
+    padding: 30px 20px;
+}
+
+.score{
+    position: relative;
+    color: white;
+    font-size: 30px;
 }
