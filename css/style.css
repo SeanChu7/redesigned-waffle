@@ -3,6 +3,11 @@
     src: url(../fonts/Gtek.ttf);
 }
 
+@font-face{
+    font-family: Emotion;
+    src: url(../fonts/Emotion.otf);
+}
+
 body{
     background-color:#000000
 }
@@ -13,6 +18,14 @@ body{
     position: relative;
     font-family: Gtek; 
     color:#F8F8FF;
+}
+
+.help{
+    position: relative;
+    font-family: Gtek; 
+    color:#F8F8FF;
+    font-size: 28px;
+    left: 7%;
 }
 
 .button{
@@ -46,4 +59,15 @@ svg{
     top: 20%;
     height: 79%;
     left:28.5%;
+}
+
+p{
+    color: white;
+    position: absolute;
+    right: 75%;
+    left: 5%;
+    top: 25%;
+    font-family: Emotion;
+    font-size: 24px;
+    
 }
