@@ -23,22 +23,45 @@ var makeLv1 = function(){
 	y+=200;
 	x=100;
     }
-
-  // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
-   players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
-   players.push(player(10,750, 650, -1, 0, "#01fffc"));
+   players.push(player(10, 50, 50, 1, 0, "#ff00e7", 125));
+   players.push(player(10,750, 650, -1, 0, "#01fffc", 125));
    playersc.push(players[0]);
-   playersc.push(players[1]);
-   // players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
-   // players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
-    //players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
+   playersc.push(players[1]);    
 }
+
+var makeLv2 = function(){
+    var x = 250;
+    var y = 350;
+    for(i = 0; i < 2; i++){
+    var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    temp.setAttribute("cx", x);
+    temp.setAttribute("cy", y);
+    temp.setAttribute("r", 6);
+    temp.setAttribute("fill","#9ffd1c");
+    temp.setAttribute("stroke","black");
+    vimg.appendChild(temp);
+    pivots.push(temp);
+    x+=300;
+    }
+   players.push(player(10, 50, 150, 1, 0, "#ff00e7", 300));
+   players.push(player(10,750, 550, -1, 0, "#01fffc", 300));
+   playersc.push(players[0]);
+   playersc.push(players[1]);    
+}
+
+var makeLevel = function(){
+    if(Math.random()*10%2<1)
+        makeLv1();
+    else
+        makeLv2();
+}
+
 
 var dist = function(x1,x2,y1,y2) {
     return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
 
-var player = function(r, x, y, dx, dy, c){
+var player = function(r, x, y, dx, dy, c, g){
 	var head = document.createElementNS("http://www.w3.org/2000/svg","circle");
 
     head.setAttribute("cx", x);
@@ -112,7 +135,7 @@ var player = function(r, x, y, dx, dy, c){
     		var inRange = [];
             var pMin;
             close = null;
-    		if(d<=125){
+    		if(d<=g){
     			inRange.push(pivots[i]);
     		}
     		else{
@@ -332,7 +355,7 @@ var collisions = function(player){
 	    vimg.removeChild(player.getHead());//error
 	    vimg.removeChild(shrekt.getHead());
         if(shrekt.getLine().parentNode==vimg)
-            vimg.removeChlid(shrekt.getLine())
+            vimg.removeChild(shrekt.getLine())
         if(player.getLine().parentNode==vimg)
             vimg.removeChild(player.getLine())
 	    for (i=0;i<player.getTails().length;i++){
@@ -361,11 +384,11 @@ var collisions = function(player){
 
 
 	if ( dist(pX, rektX, pY, rektY)  <= 16){
-            if(player.getHead().parentNode==vimg){
-		vimg.removeChild(player.getHead());//error
-	    }
+        if(player.getHead().parentNode==vimg)
+		  vimg.removeChild(player.getHead());//error
         if(player.getLine().parentNode==vimg)
             vimg.removeChild(player.getLine());
+
 	    for (i=0;i<player.getTails().length;i++){
             var Tail = player.getTails()[i];
 		    vimg.removeChild(Tail);
@@ -375,7 +398,8 @@ var collisions = function(player){
     }
 }
 
-makeLv1()
+makeLevel();
+
 var intervalID, intervalID2, intervalID3;
 var scored = false;
 var score = function(){
@@ -387,10 +411,14 @@ var score = function(){
             curr.innerHTML = parseInt(curr.innerHTML) + 1;
         }
         else if(players[0].getStuff("fill")=="#ff00e7"){
+            if(players[0].getLine().parentNode=vimg)
+                vimg.removeChild(players[0].getLine());
             curr = document.getElementById("p1_score")
             curr.innerHTML = parseInt(curr.innerHTML) + 1;
         }
         else{
+            if(players[0].getLine().parentNode=vimg)
+                vimg.removeChild(players[0].getLine());
             curr = document.getElementById("p2_score")
             curr.innerHTML = parseInt(curr.innerHTML) + 1;
         }
@@ -399,14 +427,18 @@ var score = function(){
         clearInterval(intervalID2);
         clearInterval(intervalID3);
         window.setTimeout(function(){
+            if(players[0]){
             vimg.removeChild(players[0].getHead());
             for(i=0;i<players[0].getTails().length;i++)
                 vimg.removeChild(players[0].getTails()[i]);
-            players.pop();
+            players.pop();}
             playersc.pop();
             playersc.pop();
+            for(i = 0; i < pivots.length; i++)
+                vimg.removeChild(pivots[i]);
+            pivots=[];
             scored = false;
-            makeLv1()
+            makeLevel();
             intervalID = setInterval(move,5);
             intervalID2 = setInterval(draw,5);
             intervalID3 = setInterval(score,5);
