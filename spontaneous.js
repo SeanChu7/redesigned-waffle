@@ -23,8 +23,8 @@ var makeLv1 = function(){
 	x=100;
     }
 
-    players.push(player(10,750, 650, Math.random()*2, Math.random()*2, "#01fffc"));
-    players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
+    players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
+   // players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
    // players.push(player(10,750, 650, 5, 0, "#01fffc"));
     //players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
     //players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
@@ -50,7 +50,7 @@ var player = function(r, x, y, dx, dy, c){
     line.setAttribute("stroke-width","2");
 
     var close;
-
+    var belowx;
     var getHead = function(){
 	return head
 	}
@@ -117,6 +117,7 @@ var player = function(r, x, y, dx, dy, c){
             }
     	}
     }
+
     var attached = false
     var attach = function(){
         if(close){
@@ -125,69 +126,92 @@ var player = function(r, x, y, dx, dy, c){
             line.setAttribute('x2', x);
             line.setAttribute('y2', y);
             vimg.appendChild(line);
+
 	    attached = true
 	    
         }
         else{
             if(line.parentNode==vimg)
                 vimg.removeChild(line);
+
 	        attached = false
+
         }
     }
     var detach = function(){
         if(line.parentNode==vimg)
             vimg.removeChild(line);
     }
+
     var getAttach = function(){
 	return attached
     }
 
     var angler = function(x, y){
-	var theta = 0;
-	if (x == 0){
-	    theta = Math.pi/2;
-	    if (y < 0){
-		theta *= -1;
-	
+	var theta = 0.0;
+	console.log(x,"x");
+	if (x == 0.0){
+	    theta = 1.0*Math.pi/2;
+	    if (y < 0.0){
+		theta *= -1.0;
 	    }
 	}else{
 	    theta = Math.atan(1.0*y / x);
+	    console.log(x,"x")
+	    console.log(y,"y")
 	    if (x < 0){
-		theta *= -1
+		theta += 1.0*Math.pi/2
 	    }
 	}
 	return theta
     }
 
     var spin = function(){
+	console.log(close,"dadasdadadadas")
+	var pX = 1.0*close.getAttribute("cx");
+	var pY = -1.0*close.getAttribute("cy");
 
-	var pX = close.getAttribute("cx");
-	var pY = close.getAttribute("cy");
-
-	var rvx = x - close.getAttribute("cx");
-	var rvy = y - close.getAttribute("cy");
+	var rvx = 1.0*x -1.0* pX;
+	var rvy = -1.0*(-1.0*y -1.0* pY);
 	var r = dist(rvx,0,rvy,0)
-	var theta = angler(rvx, rvy)
-	var cos_alpha = (dx * rvx + dy * rvy)
-
+//	var theta = angler(rvx, rvy)
+	var theta = Math.atan2(rvy, rvx) // + Math.PI
+	console.log(Math.atan2(rvy,rvx),"atan")
+	console.log(rvy)
+	console.log(rvx)
+	console.log(Math.pi)
+	console.log(Math.PI)
+	console.log(theta, "theta before inc")
+	var cos_alpha = (dx * rvx + dy * rvy) /  (dist(dx,0,dy,0) * dist(rvx,0,rvy,0))
+	//console.log(cos_alpha,"dhuasdbadkab")
 	if (cos_alpha > 0){
 	    var v = dist(dx,0,dy,0);
+	    console.log(v,"speed")
 	    var dtheta = v / r;
 
-	    if ((rvy < 0 && dx < 0) || (rvy > 0 && dx > 0)){
+	    if ((y < pY && dx < 0) || (y > pY && dx > 0)){
 		dtheta*=-1;
 	
 	    }
+	    console.log(dtheta,"dtheta")
 	    theta+=dtheta;
 
-	    var tmpX = r * Math.cos(theta) + pX;
-	    var tmpY = r * Math.sin(theta) + pY;
+	    console.log(theta, "theta after inc")
 
-	    dx = tmpX - x
-	    dy = tmpY - y
+	    var tmpX = r * Math.cos(theta) + 1.0*pX;
+	    var tmpY = (r * Math.sin(theta) + -1.0*pY);
 
-	    x = tmpX;
-	    y = tmpY
+	    console.log(r, "r")
+	    console.log(pY, "pY")
+	    console.log(Math.sin(theta), "sin")
+	    console.log(tmpY, "tmpY")
+
+	    dx = (tmpX - x) 
+	    dy = (tmpY - y) 
+	    console.log(dx, "dx")
+	    console.log(dy, "dy")
+	   // x = tmpX;
+	   // y = tmpY
 	}
     }
 
@@ -205,22 +229,23 @@ var player = function(r, x, y, dx, dy, c){
 }
 
 var move = function(){
+
 	for(k=0;k<pivots.length;k++){
 	    pivots[k].setAttribute("fill","#9ffd1c");
 	}
 
 	for(k=0;k<players.length;k++){
 	    if (players[k].getAttach()){
-		spin;
+		players[k].spin();
 	    }
-	    else{
+	   // else{
 		players[k].inc();
 		
 		players[k].detect();
 		collisions(players[k]);  
-	    }
+	    //}
 	}
-
+    
 }
 
 var draw = function(){
@@ -229,7 +254,7 @@ var draw = function(){
         else
             players[0].detach(); 
 }
- var broken = false
+var broken = false
 var collisions = function(player){
     
     var master = []
@@ -291,7 +316,9 @@ var collisions = function(player){
 
 makeLv1()
 var intervalID;
-intervalID = setInterval(move,5);
+var button = document.getElementById("p1")
+button.addEventListener("click",move)
+//intervalID = setInterval(move,5);
 intervalID2 = setInterval(draw,5);
 var keydown = false;
 document.onkeydown = function(e){

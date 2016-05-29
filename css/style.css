@@ -1,0 +1,49 @@
+@font-face {
+    font-family: Gtek;
+    src: url(../fonts/Gtek.ttf);
+}
+
+body{
+    background-color:#000000
+}
+
+.title{
+    text-align: center;
+    width:100%;
+    position: relative;
+    font-family: Gtek; 
+    color:#F8F8FF;
+}
+
+.button{
+
+    position: relative;
+    background-color: #000000;
+    border: 1;
+    color: white;
+    padding: 15px 40px;
+    text-align: center;
+    font-family: Gtek;
+    display: inline-block;
+    font-size: 10px;
+    cursor: pointer;
+}
+.center{
+    text-align:center;
+}
+.container{
+    display: block;
+    position: relative;
+    overflow: hidden; 
+    text-align: center;
+    height:80%;
+}
+
+svg{
+    border: 1px solid white; 
+    display: block;
+    position: absolute;
+    top: 20%;
+    height: 79%;
+    left:28.5%;
+}
