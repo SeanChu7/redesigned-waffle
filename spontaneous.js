@@ -25,7 +25,7 @@ var makeLv1 = function(){
     }
 
   // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
-   players.push(player(10, 50, 50, 1, 1, "#ff00e7"));
+   players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
    players.push(player(10,750, 650, -1, 0, "#01fffc"));
    playersc.push(players[0]);
    playersc.push(players[1]);
@@ -363,13 +363,6 @@ var collisions = function(player){
 	if ( dist(pX, rektX, pY, rektY)  <= 16){
             if(player.getHead().parentNode==vimg){
 		vimg.removeChild(player.getHead());//error
-
-		var scorer = document.getElementById("p"+Math.round(i/(master.length/2))+"_score");
-		console.log("p"+Math.round(i/(master.length/2))+"_score")
-		console.log(scorer.innerHTML)
-		var score = parseInt(scorer.innerHTML)+1;
-		console.log(score)
-		scorer.innerHTML = score.toString();
 	    }
         if(player.getLine().parentNode==vimg)
             vimg.removeChild(player.getLine());
@@ -383,11 +376,49 @@ var collisions = function(player){
 }
 
 makeLv1()
-var intervalID;
+var intervalID, intervalID2, intervalID3;
+var scored = false;
+var score = function(){
+    if(!scored && players.length<=1){
+        if(!players[0]){
+            curr = document.getElementById("p1_score")
+            curr.innerHTML = parseInt(curr.innerHTML) + 1;
+            curr = document.getElementById("p2_score")
+            curr.innerHTML = parseInt(curr.innerHTML) + 1;
+        }
+        else if(players[0].getStuff("fill")=="#ff00e7"){
+            curr = document.getElementById("p1_score")
+            curr.innerHTML = parseInt(curr.innerHTML) + 1;
+        }
+        else{
+            curr = document.getElementById("p2_score")
+            curr.innerHTML = parseInt(curr.innerHTML) + 1;
+        }
+        scored = true;
+        clearInterval(intervalID);
+        clearInterval(intervalID2);
+        clearInterval(intervalID3);
+        window.setTimeout(function(){
+            vimg.removeChild(players[0].getHead());
+            for(i=0;i<players[0].getTails().length;i++)
+                vimg.removeChild(players[0].getTails()[i]);
+            players.pop();
+            playersc.pop();
+            playersc.pop();
+            scored = false;
+            makeLv1()
+            intervalID = setInterval(move,5);
+            intervalID2 = setInterval(draw,5);
+            intervalID3 = setInterval(score,5);
+            console.log("WORKS");
+        },3000);
+    }
+}
 //var button = document.getElementById("p1")
 //button.addEventListener("click",move)
 intervalID = setInterval(move,5);
 intervalID2 = setInterval(draw,5);
+intervalID3 = setInterval(score,5);
 var keydown = false;
 var keydown2 = false;
 document.onkeydown = function(e){
