@@ -25,6 +25,8 @@ var makeLv1 = function(){
 
     players.push(player(10,750, 650, Math.random()*2, Math.random()*2, "#01fffc"));
     players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
+   // players.push(player(10,750, 650, 5, 0, "#01fffc"));
+    //players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
     players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
     players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
 }
@@ -141,26 +143,58 @@ var move = function(){
 var collisions = function(player){
     
     var master = []
-   
+    var otherHeads = []
     //console.log(1)
     for (i = 0; i < players.length;i++){
 	other = players[i]
 	if (player != other){
 	    master.push.apply(master,other.getTails())
+	    otherHeads.push(other);
 	}
     }
-   // console.log(2)
-    //console.log(master.length)
+    var pX = player.getStuff("cx")
+    var pY = player.getStuff("cy")
+    console.log(otherHeads)
+    for (i = 0; i < otherHeads.length;i++){
+	var shrekt = otherHeads[i]
+	console.log(otherHeads)
+	var shrektX = shrekt.getStuff("cx")
+	var shrektY = shrekt.getStuff("cy")
+
+	console.log(dist(pX, shrektX, pY, shrektY));
+	if ( dist(pX, shrektX, pY, shrektY)  <= 20){
+	    
+	    vimg.removeChild(player.getHead());//error
+	    vimg.removeChild(shrekt.getHead());
+	    console.log(players,"sfsdfsfsfsfsf")
+	    for (i=0;i<player.getTails().length;i++){
+		
+		vimg.removeChild(player.getTails()[i]);
+	    }
+	    
+	    for (i=0;i<shrekt.getTails().length;i++){
+		
+		vimg.removeChild(shrekt.getTails()[i]);
+	    }
+	    //console.log("?")
+	   
+	    players.splice(players.indexOf(player),1)
+	    players.splice(players.indexOf(shrekt),1)
+	    
+	    console.log(players, "dasfsdfcsdvfzdvffdzx")
+	}
+	
+    }
+
     for (i = 0; i < master.length; i++){
 	//console.log(3)
 	var rekt = master[i];
 	//console.log(rekt)
-	var pX = player.getStuff("cx")
-	var pY = player.getStuff("cy")
+
 	var rektX = rekt.getAttribute("cx")
 	var rektY = rekt.getAttribute("cy")
 
-	//console.log(dist(pX, rektX, pY, rektY))
+	
 	if ( dist(pX, rektX, pY, rektY)  <= 16){
 	    console.log(player.getHead())
 	    vimg.removeChild(player.getHead());//error
@@ -171,12 +205,12 @@ var collisions = function(player){
 	    //console.log("?")
 	    console.log(players)
 	    players.splice(players.indexOf(player),1)
-	    //console.log(players)
-	    broken = true
-	    //console.log(player.getTails()[i])
-	    console.log(players)
+	  
+	    
+	    console.log(players, "ew23132323")
 	}
     }
+   
     //console.log(broken)
 }
 
