@@ -25,7 +25,7 @@ var makeLv1 = function(){
     }
 
   // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
-   players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
+   players.push(player(10, 50, 50, 1, 1, "#ff00e7"));
    players.push(player(10,750, 650, -1, 0, "#01fffc"));
    playersc.push(players[0]);
    playersc.push(players[1]);
@@ -361,8 +361,16 @@ var collisions = function(player){
 
 
 	if ( dist(pX, rektX, pY, rektY)  <= 16){
-        if(player.getHead().parentNode==vimg)
-	       vimg.removeChild(player.getHead());//error
+            if(player.getHead().parentNode==vimg){
+		vimg.removeChild(player.getHead());//error
+
+		var scorer = document.getElementById("p"+Math.round(i/(master.length/2))+"_score");
+		console.log("p"+Math.round(i/(master.length/2))+"_score")
+		console.log(scorer.innerHTML)
+		var score = parseInt(scorer.innerHTML)+1;
+		console.log(score)
+		scorer.innerHTML = score.toString();
+	    }
         if(player.getLine().parentNode==vimg)
             vimg.removeChild(player.getLine());
 	    for (i=0;i<player.getTails().length;i++){
