@@ -142,6 +142,9 @@ var player = function(r, x, y, dx, dy, c){
     var detach = function(){
         if(line.parentNode==vimg)
             vimg.removeChild(line);
+        attached = false
+        dtheta = 0;
+        thetaset = false;
     }
 
     var getAttach = function(){
