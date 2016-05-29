@@ -55,6 +55,9 @@ var player = function(r, x, y, dx, dy, c){
     var getHead = function(){
 	return head
 	}
+    var getLine = function(){
+        return line;
+    }
     var tails = [];
     var spacing = 0;
     vimg.appendChild(head);
@@ -263,7 +266,8 @@ var player = function(r, x, y, dx, dy, c){
         attach:attach,
         detach:detach,
 	getAttach:getAttach,
-	spin:spin
+	spin:spin,
+    getLine:getLine
     }
 }
 
@@ -320,8 +324,12 @@ var collisions = function(player){
 	    
 	    vimg.removeChild(player.getHead());//error
 	    vimg.removeChild(shrekt.getHead());
+        if(shrekt.getLine().parentNode==vimg)
+            vimg.removeChlid(shrekt.getLine())
+        if(player.getLine().parentNode==vimg)
+            vimg.removeChild(player.getLine())
 	    for (i=0;i<player.getTails().length;i++){
-		
+		  
 		vimg.removeChild(player.getTails()[i]);
 	    }
 	    
@@ -348,6 +356,8 @@ var collisions = function(player){
 	if ( dist(pX, rektX, pY, rektY)  <= 16){
         if(player.getHead().parentNode==vimg)
 	       vimg.removeChild(player.getHead());//error
+        if(player.getLine().parentNode==vimg)
+            vimg.removeChild(player.getLine());
 	    for (i=0;i<player.getTails().length;i++){
             var Tail = player.getTails()[i];
 		    vimg.removeChild(Tail);
