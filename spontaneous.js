@@ -65,10 +65,16 @@ var player = function(r, x, y, dx, dy, c){
     	x += dx;
     	y += dy;
     	var speed = Math.pow(dx * dx + dy * dy,0.5);
-		if((x+r >= 800 && dx > 0) || (x <= r && dx < 0))
+		if((x+r >= 800 && dx > 0) || (x <= r && dx < 0)) {
+            thetaset = false;
+            dtheta = 0;
 		    dx *= -1;
-		if((y+r >= 700 && dy > 0) || (y <= r && dy < 0))
+        }
+		if((y+r >= 700 && dy > 0) || (y <= r && dy < 0)) {
+            thetaset = false
+            dtheta = 0;
 		    dy *= -1;
+        }
     	spacing++;
     	head.setAttribute("cx", x);
     	head.setAttribute("cy", y);
@@ -273,8 +279,8 @@ var move = function(){
 	    }
 	   // else{
 		players[k].inc();
-		
-		players[k].detect();
+		if (!players[k].getAttach())
+		  players[k].detect();
 		collisions(players[k]);  
 	    //}
 	}
@@ -288,7 +294,7 @@ var draw = function(){
             players[0].detach(); 
         if(keydown2 && players[1])
             players[1].attach();
-        else
+        else if(players[1])
             players[1].detach();
 }
 var broken = false
