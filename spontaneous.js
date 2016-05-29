@@ -24,8 +24,8 @@ var makeLv1 = function(){
     }
 
   // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
-   players.push(player(10, 50, 200, 1, 0, "#ff00e7"));
-   // players.push(player(10,750, 650, 5, 0, "#01fffc"));
+   players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
+   players.push(player(10,750, 650, -1, 0, "#01fffc"));
    // players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
    // players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
     //players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
@@ -100,7 +100,7 @@ var player = function(r, x, y, dx, dy, c){
     		var inRange = [];
             var pMin;
             close = null;
-    		if(d<=100){
+    		if(d<=125){
     			inRange.push(pivots[i]);
     		}
     		else{
@@ -153,7 +153,7 @@ var player = function(r, x, y, dx, dy, c){
 
     var angler = function(x, y){
 	var theta = 0.0;
-	console.log(x,"x");
+	////console.log(x,"x");
 	if (x == 0.0){
 	    theta = 1.0*Math.pi/2;
 	    if (y < 0.0){
@@ -161,8 +161,8 @@ var player = function(r, x, y, dx, dy, c){
 	    }
 	}else{
 	    theta = Math.atan(1.0*y / x);
-	    console.log(x,"x")
-	    console.log(y,"y")
+	    ////console.log(x,"x")
+	    ////console.log(y,"y")
 	    if (x < 0){
 		theta += 1.0*Math.pi/2
 	    }
@@ -171,7 +171,7 @@ var player = function(r, x, y, dx, dy, c){
     }
 
     var spin = function(){
-	console.log(close,"dadasdadadadas")
+	//console.log(close,"dadasdadadadas")
 	var pX = 1.0*close.getAttribute("cx");
 	var pY = -1.0*close.getAttribute("cy");
 
@@ -184,22 +184,22 @@ var player = function(r, x, y, dx, dy, c){
 	    belowx = false
 //	var theta = angler(rvx, rvy)
 	var theta = Math.atan2(rvy, rvx) // + Math.PI
-	console.log(Math.atan2(rvy,rvx),"atan")
-	console.log(rvy)
-	console.log(rvx)
-	console.log(Math.pi)
-	console.log(Math.PI)
-	console.log(theta, "theta before inc")
+	//console.log(Math.atan2(rvy,rvx),"atan")
+	//console.log(rvy)
+	//console.log(rvx)
+	//console.log(Math.pi)
+	//console.log(Math.PI)
+	//console.log(theta, "theta before inc")
 	var cos_alpha = (dx * rvx + dy * rvy) /  (dist(dx,0,dy,0) * dist(rvx,0,rvy,0))
-	//console.log(cos_alpha,"dhuasdbadkab")
+	////console.log(cos_alpha,"dhuasdbadkab")
 	if (cos_alpha > 0){
-        console.log(v,"speed")
+        //console.log(v,"speed")
         if (!thetaset) {
 	    var v = dist(dx,0,dy,0);
 	    dtheta = v / r;
 	    if (((x-pX > 0 && dy<0) || (x-pX < 0 && dy > 0)) || ((-1.0*y-pY > 0 && dx<0) || (-1.0*y-pY <0 && dx >0))) {
-		console.log(x)
-		console.log(pX, "REv px")
+		//console.log(x)
+		//console.log(pX, "REv px")
 		dtheta*=-1;
 	
 	    }
@@ -217,18 +217,18 @@ var player = function(r, x, y, dx, dy, c){
 
 	    if (dtheta <0)
 		dtheta*=-1*/
-	    console.log(dtheta,"dtheta")
+	    //console.log(dtheta,"dtheta")
 	    theta+=dtheta;
 
-	    console.log(theta, "theta after inc")
+	    //console.log(theta, "theta after inc")
 
 	    var tmpX = r * Math.cos(theta) + 1.0*pX;
 	    var tmpY = (r * Math.sin(theta) + -1.0*pY);
 
-	    console.log(r, "r")
-	    console.log(pY, "pY")
-	    console.log(Math.sin(theta), "sin")
-	    console.log(tmpY, "tmpY")
+	    //console.log(r, "r")
+	    //console.log(pY, "pY")
+	    //console.log(Math.sin(theta), "sin")
+	    //console.log(tmpY, "tmpY")
 
 	    dx = (tmpX - x) 
 	    dy = (tmpY - y) 
@@ -241,8 +241,8 @@ var player = function(r, x, y, dx, dy, c){
 		if (!belowx)
 		    dy *= -1.0
 		belowx = true*/ 
-	    console.log(dx, "dx")
-	    console.log(dy, "dy")
+	    //console.log(dx, "dx")
+	    //console.log(dy, "dy")
 	   // x = tmpX;
 	   // y = tmpY
 	}
@@ -286,6 +286,10 @@ var draw = function(){
             players[0].attach();
         else
             players[0].detach(); 
+        if(keydown2 && players[1])
+            players[1].attach();
+        else
+            players[1].detach();
 }
 var broken = false
 var collisions = function(player){
@@ -354,14 +358,21 @@ var intervalID;
 intervalID = setInterval(move,5);
 intervalID2 = setInterval(draw,5);
 var keydown = false;
+var keydown2 = false;
 document.onkeydown = function(e){
-
-    if(e.keyCode==32){
+    //console.log(keydown);
+    if(e.keyCode==83){
         keydown = true;
+    }
+    if(e.keyCode==75){
+        keydown2 = true;
     }
 }
 document.onkeyup = function(e){
-    if(e.keyCode==32){
+    if(e.keyCode==83){
         keydown = false;
+    }
+    if(e.keyCode==75){
+        keydown2 = false;
     }
 }
