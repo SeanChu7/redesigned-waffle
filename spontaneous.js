@@ -24,7 +24,7 @@ var makeLv1 = function(){
     }
 
   // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
-   players.push(player(10, 50, 70, 1, 0, "#ff00e7"));
+   players.push(player(10, 50, 200, 1, 0, "#ff00e7"));
    // players.push(player(10,750, 650, 5, 0, "#01fffc"));
    // players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
    // players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
@@ -50,7 +50,8 @@ var player = function(r, x, y, dx, dy, c){
     line.setAttribute("stroke-width","2");
 
     var close;
-    var belowx;
+    var thetaset = false;
+    var dtheta = 0;
     var getHead = function(){
 	return head
 	}
@@ -189,19 +190,21 @@ var player = function(r, x, y, dx, dy, c){
 	var cos_alpha = (dx * rvx + dy * rvy) /  (dist(dx,0,dy,0) * dist(rvx,0,rvy,0))
 	//console.log(cos_alpha,"dhuasdbadkab")
 	if (cos_alpha > 0){
+        console.log(v,"speed")
+        if (!thetaset) {
 	    var v = dist(dx,0,dy,0);
-	    console.log(v,"speed")
-	    var dtheta = v / r;
-
-	    if (x-pX > 0 && dy<0 || x-pX < 0 && dy > 0) {
+	    dtheta = v / r;
+	    if (((x-pX > 0 && dy<0) || (x-pX < 0 && dy > 0)) || ((-1.0*y-pY > 0 && dx<0) || (-1.0*y-pY <0 && dx >0))) {
 		console.log(x)
 		console.log(pX, "REv px")
 		dtheta*=-1;
 	
 	    }
-	    if ((-1.0*y-pY > 0 && dx<0) || -1.0*y-pY <0 && dx >0) {
-		dtheta *= -1
-	    }
+        thetaset = true;
+        }
+	 //    if ((-1.0*y-pY > 0 && dx<0) || (-1.0*y-pY <0 && dx >0)) {
+		// dtheta *= -1
+	 //    }
 
 	   /* if ((y-pY < 0 && dx > 0)) {
 		dtheta *= -1
