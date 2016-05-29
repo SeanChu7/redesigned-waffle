@@ -8,8 +8,9 @@ body{
 }
 
 .title{
+    text-align: center;
+    width:100%;
     position: relative;
-    left: 40%;
     font-family: Gtek; 
     color:#F8F8FF;
 }
@@ -17,7 +18,6 @@ body{
 .button{
 
     position: relative;
-    left: 35%;
     background-color: #000000;
     border: 1;
     color: white;
@@ -26,23 +26,24 @@ body{
     font-family: Gtek;
     display: inline-block;
     font-size: 10px;
-    margin: 4px 2px;
     cursor: pointer;
 }
-
+.center{
+    text-align:center;
+}
 .container{
-    display: inline-block;
+    display: block;
     position: relative;
-    width: 100%;
-    padding-bottom: 40%;
-    vertical-align: middle; 
     overflow: hidden; 
+    text-align: center;
+    height:80%;
 }
 
 svg{
     border: 1px solid white; 
-    display: inline-block;
+    display: block;
     position: absolute;
-    top: 2%;
-    left: 25%;
+    top: 20%;
+    height: 79%;
+    left:28.5%;
 }
