@@ -49,11 +49,97 @@ var makeLv2 = function(){
    playersc.push(players[1]);    
 }
 
+var makeLv3 = function(){
+    var hex = [ [200,100], [600,100], [100,350],[400,350],[700,350],[200,600],[600,600]]
+    for(i=0;i<hex.length;i++){
+    var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    temp.setAttribute("cx", hex[i][0]);
+    temp.setAttribute("cy", hex[i][1]);
+    temp.setAttribute("r", 6);
+    temp.setAttribute("fill","#9ffd1c");
+    temp.setAttribute("stroke","black");
+    vimg.appendChild(temp);
+    pivots.push(temp);
+    }
+   players.push(player(10, 50, 50, 1, 0, "#ff00e7", 200));
+   players.push(player(10,750, 650, -1, 0, "#01fffc", 200));
+   playersc.push(players[0]);
+   playersc.push(players[1]);  
+}
+
+var makeLv4 = function(){
+    var x = 50;
+    var y = 50;
+    for(i = 0; i < 15; i ++){
+    var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    temp.setAttribute("cx", x);
+    temp.setAttribute("cy", y);
+    temp.setAttribute("r", 6);
+    temp.setAttribute("fill","#9ffd1c");
+    temp.setAttribute("stroke","black");
+    vimg.appendChild(temp);
+    pivots.push(temp);
+    x+=50
+    }
+    x = 50;
+    y = 650;
+    for(i = 0; i < 15; i ++){
+    var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    temp.setAttribute("cx", x);
+    temp.setAttribute("cy", y);
+    temp.setAttribute("r", 6);
+    temp.setAttribute("fill","#9ffd1c");
+    temp.setAttribute("stroke","black");
+    vimg.appendChild(temp);
+    pivots.push(temp);
+    x+=50
+    }
+    x = 50;
+    y = 100;
+    for(i = 0; i < 11; i++){
+    var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    temp.setAttribute("cx", x);
+    temp.setAttribute("cy", y);
+    temp.setAttribute("r", 6);
+    temp.setAttribute("fill","#9ffd1c");
+    temp.setAttribute("stroke","black");
+    vimg.appendChild(temp);
+    pivots.push(temp);
+    y+=50
+    
+    }
+
+    x = 750;
+    y = 100;
+    for(i = 0; i < 11; i++){
+    var temp = document.createElementNS("http://www.w3.org/2000/svg","circle")
+    temp.setAttribute("cx", x);
+    temp.setAttribute("cy", y);
+    temp.setAttribute("r", 6);
+    temp.setAttribute("fill","#9ffd1c");
+    temp.setAttribute("stroke","black");
+    vimg.appendChild(temp);
+    pivots.push(temp);
+    y+=50
+    
+    }
+   players.push(player(10, 100, 100, 1, 0, "#ff00e7", 75));
+   players.push(player(10, 650, 600, -1, 0, "#01fffc", 75));
+   playersc.push(players[0]);
+   playersc.push(players[1]);  
+
+}
+
 var makeLevel = function(){
-    if(Math.random()*10%2<1)
+    var rand = Math.random()*10%4;
+    if(rand<1)
         makeLv1();
-    else
+    else if(rand<2)
         makeLv2();
+    else if(rand<3)
+        makeLv3();
+    else
+        makeLv4();
 }
 
 
@@ -411,13 +497,13 @@ var score = function(){
             curr.innerHTML = parseInt(curr.innerHTML) + 1;
         }
         else if(players[0].getStuff("fill")=="#ff00e7"){
-            if(players[0].getLine().parentNode=vimg)
+            if(players[0].getLine().parentNode==vimg)
                 vimg.removeChild(players[0].getLine());
             curr = document.getElementById("p1_score")
             curr.innerHTML = parseInt(curr.innerHTML) + 1;
         }
         else{
-            if(players[0].getLine().parentNode=vimg)
+            if(players[0].getLine().parentNode==vimg)
                 vimg.removeChild(players[0].getLine());
             curr = document.getElementById("p2_score")
             curr.innerHTML = parseInt(curr.innerHTML) + 1;
