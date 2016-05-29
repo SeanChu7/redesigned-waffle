@@ -23,13 +23,14 @@ var makeLv1 = function(){
 	x=100;
     }
 
-    players.push(player(10, 750, 650, Math.random()*2, Math.random()*2, "#01fffc"));
+    players.push(player(10,750, 650, Math.random()*2, Math.random()*2, "#01fffc"));
     players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
-    players.push(player(10, 750, 50, Math.random()*2, Math.random()*2, "red"));
+    players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
     players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
 }
 
 var dist = function(x1,x2,y1,y2) {
+   // console.log(x1,x2)
     return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
 
@@ -41,11 +42,15 @@ var player = function(r, x, y, dx, dy, c){
     head.setAttribute("r", r);
     head.setAttribute("fill",c);
     head.setAttribute("stroke","black");
-
+    var getHead = function(){
+	return head
+	}
     var tails = [];
     var spacing = 0;
     vimg.appendChild(head);
-
+    var getStuff = function(thing){
+	return head.getAttribute(thing);
+    }
     var inc = function(){
     	x += dx;
     	y += dy;
@@ -65,11 +70,14 @@ var player = function(r, x, y, dx, dy, c){
 	    tail.setAttribute("fill",c);
 
 	    vimg.appendChild(tail);
+	    
 	    tails.push(tail);
 	    if(tails.length>100/speed){
-	    	vimg.removeChild(tails[0]);
+
+	    	vimg.removeChild(tails[0]);//error
 	    	tails.shift();
-	    }}
+	    }
+	}
     }
     var getTails = function(){
     	return tails;
@@ -101,21 +109,79 @@ var player = function(r, x, y, dx, dy, c){
     return{
     	inc:inc,
     	detect:detect,
-    	getTails:getTails
+    	getTails:getTails,
+	getStuff:getStuff,
+	getHead:getHead
     }
 }
 
 var move = function(){
+    
 	for(k=0;k<pivots.length;k++){
-		pivots[k].setAttribute("fill","#9ffd1c");
-	}
-	for(k=0;k<players.length;k++){
-		players[k].inc();
-		players[k].detect();
+	    pivots[k].setAttribute("fill","#9ffd1c");
 	}
 
+	for(k=0;k<players.length;k++){
+	    console.log(players[k],k)
+	    players[k].inc();
+	    
+	    players[k].detect();
+	    collisions(players[k]);
+	    /*
+	    if (broken){
+		k--
+		broken = false
+		}
+	    console.log(":")
+*/
+	}
+
+}
+ var broken = false
+var collisions = function(player){
+    
+    var master = []
+   
+    //console.log(1)
+    for (i = 0; i < players.length;i++){
+	other = players[i]
+	if (player != other){
+	    master.push.apply(master,other.getTails())
+	}
+    }
+   // console.log(2)
+    //console.log(master.length)
+    for (i = 0; i < master.length; i++){
+	//console.log(3)
+	var rekt = master[i];
+	//console.log(rekt)
+	var pX = player.getStuff("cx")
+	var pY = player.getStuff("cy")
+	var rektX = rekt.getAttribute("cx")
+	var rektY = rekt.getAttribute("cy")
+
+	//console.log(dist(pX, rektX, pY, rektY))
+	if ( dist(pX, rektX, pY, rektY)  <= 16){
+	    console.log(player.getHead())
+	    vimg.removeChild(player.getHead());//error
+	    for (i=0;i<player.getTails().length;i++){
+	
+		vimg.removeChild(player.getTails()[i]);
+	    }
+	    //console.log("?")
+	    console.log(players)
+	    players.splice(players.indexOf(player),1)
+	    //console.log(players)
+	    broken = true
+	    //console.log(player.getTails()[i])
+	    console.log(players)
+	}
+    }
+    //console.log(broken)
 }
 
 makeLv1()
 var intervalID;
+//var button = document.getElementById("p1")
+//button.addEventListener("click",move)
 intervalID = setInterval(move,5);
