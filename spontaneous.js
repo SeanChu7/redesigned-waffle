@@ -25,6 +25,8 @@ var makeLv1 = function(){
 
     players.push(player(10,750, 650, Math.random()*2, Math.random()*2, "#01fffc"));
     players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
+   // players.push(player(10,750, 650, 5, 0, "#01fffc"));
+    //players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
     players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
     players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
 }
@@ -97,7 +99,7 @@ var player = function(r, x, y, dx, dy, c){
     		var inRange = [];
             var pMin;
             close = null;
-    		if(d<=50){
+    		if(d<=100){
     			inRange.push(pivots[i]);
     		}
     		else{
@@ -169,19 +171,49 @@ var draw = function(){
 var collisions = function(player){
     
     var master = []
-   
+    var otherHeads = []
     for (i = 0; i < players.length;i++){
 	other = players[i]
 	if (player != other){
 	    master.push.apply(master,other.getTails())
+	    otherHeads.push(other);
 	}
     }
+    var pX = player.getStuff("cx")
+    var pY = player.getStuff("cy")
+    for (i = 0; i < otherHeads.length;i++){
+	var shrekt = otherHeads[i]
+	var shrektX = shrekt.getStuff("cx")
+	var shrektY = shrekt.getStuff("cy")
+
+	if ( dist(pX, shrektX, pY, shrektY)  <= 20){
+	    
+	    vimg.removeChild(player.getHead());//error
+	    vimg.removeChild(shrekt.getHead());
+	    for (i=0;i<player.getTails().length;i++){
+		
+		vimg.removeChild(player.getTails()[i]);
+	    }
+	    
+	    for (i=0;i<shrekt.getTails().length;i++){
+		
+		vimg.removeChild(shrekt.getTails()[i]);
+	    }
+	   
+	    players.splice(players.indexOf(player),1)
+	    players.splice(players.indexOf(shrekt),1)
+	    
+	}
+	
+    }
+
     for (i = 0; i < master.length; i++){
 	var rekt = master[i];
 	var pX = player.getStuff("cx")
 	var pY = player.getStuff("cy")
 	var rektX = rekt.getAttribute("cx")
 	var rektY = rekt.getAttribute("cy")
+
 
 	if ( dist(pX, rektX, pY, rektY)  <= 16){
         if(player.getHead().parentNode==vimg)
@@ -191,7 +223,6 @@ var collisions = function(player){
 		    vimg.removeChild(Tail);
 	    }
 	    players.splice(players.indexOf(player),1)
-	    broken = true
 	}
     }
 }
