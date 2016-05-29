@@ -1,6 +1,7 @@
 var vimg = document.getElementById("vimg")
 
 var players = []
+var playersc = []
 var pivots = []
 var makeLv1 = function(){
     var x=100;
@@ -26,6 +27,8 @@ var makeLv1 = function(){
   // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
    players.push(player(10, 50, 50, 1, 0, "#ff00e7"));
    players.push(player(10,750, 650, -1, 0, "#01fffc"));
+   playersc.push(players[0]);
+   playersc.push(players[1]);
    // players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
    // players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
     //players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
@@ -137,7 +140,7 @@ var player = function(r, x, y, dx, dy, c){
             line.setAttribute('y2', y);
             vimg.appendChild(line);
 
-	    attached = true
+	       attached = true
 	    
         }
         else{
@@ -238,9 +241,8 @@ var player = function(r, x, y, dx, dy, c){
 	    //console.log(pY, "pY")
 	    //console.log(Math.sin(theta), "sin")
 	    //console.log(tmpY, "tmpY")
-
-	    dx = (tmpX - x) 
-	    dy = (tmpY - y) 
+	       dx = (tmpX - x) 
+	       dy = (tmpY - y) 
 	    /*if ( y - -1.0*pY < 0) {
 		if (belowx)
 		    dy *= -1.0
@@ -292,14 +294,14 @@ var move = function(){
 }
 
 var draw = function(){
-        if(keydown)
-            players[0].attach();
-        else
-            players[0].detach(); 
+        if(keydown && players[0])
+            playersc[0].attach();
+        else if(keydown2 && players[0])
+            playersc[0].detach(); 
         if(keydown2 && players[1])
-            players[1].attach();
+            playersc[1].attach();
         else if(players[1])
-            players[1].detach();
+            playersc[1].detach();
 }
 var broken = false
 var collisions = function(player){
