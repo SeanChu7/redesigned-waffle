@@ -292,15 +292,20 @@ var move = function(){
 	}
     
 }
-
+var isIn = function(a,b){
+    for(i = 0; i < b.length; i++)
+        if(a==b[i])
+            return true;
+    return false;
+}
 var draw = function(){
-        if(keydown && players[0])
+        if(keydown && isIn(playersc[0],players))
             playersc[0].attach();
-        else if(keydown2 && players[0])
+        else if(isIn(playersc[0],players))
             playersc[0].detach(); 
-        if(keydown2 && players[1])
+        if(keydown2 && isIn(playersc[1],players))
             playersc[1].attach();
-        else if(players[1])
+        else if(isIn(playersc[1],players))
             playersc[1].detach();
 }
 var broken = false
