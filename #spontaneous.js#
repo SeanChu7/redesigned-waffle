@@ -117,6 +117,7 @@ var player = function(r, x, y, dx, dy, c){
             }
     	}
     }
+    var attached = false
     var attach = function(){
         if(close){
             line.setAttribute('x1', close.getAttribute("cx"));
@@ -124,18 +125,22 @@ var player = function(r, x, y, dx, dy, c){
             line.setAttribute('x2', x);
             line.setAttribute('y2', y);
             vimg.appendChild(line);
-
+	    attached = true
 	    
         }
         else{
             if(line.parentNode==vimg)
                 vimg.removeChild(line);
+	        attached = false
         }
     }
     var detach = function(){
         if(line.parentNode==vimg)
             vimg.removeChild(line);
     }
+    var getAttach = function(){
+	return attached
+	}
     return{
     	inc:inc,
     	detect:detect,
@@ -143,22 +148,26 @@ var player = function(r, x, y, dx, dy, c){
     	getStuff:getStuff,
     	getHead:getHead,
         attach:attach,
-        detach:detach
+        detach:detach,
+	getAttach:getAttach
     }
 }
 
 var move = function(){
-    
 	for(k=0;k<pivots.length;k++){
 	    pivots[k].setAttribute("fill","#9ffd1c");
 	}
 
 	for(k=0;k<players.length;k++){
-	    players[k].inc();
-	    
-	    players[k].detect();
-	    collisions(players[k]);  
-
+	    if (players[k].getAttach()){
+		
+	    }
+	    else{
+		players[k].inc();
+		
+		players[k].detect();
+		collisions(players[k]);  
+	    }
 	}
 
 }
