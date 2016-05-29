@@ -23,11 +23,11 @@ var makeLv1 = function(){
 	x=100;
     }
 
-    players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
-   // players.push(player(10, 50, 50, Math.random()*2, Math.random()*2, "#ff00e7"));
+  // players.push(player(10,750, 650, -1*Math.random()*2,-1* Math.random()*2, "#01fffc"));
+   players.push(player(10, 50, 70, 1, 0, "#ff00e7"));
    // players.push(player(10,750, 650, 5, 0, "#01fffc"));
-    //players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
-    //players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
+   // players.push(player(10, 50, 650, 5, 0, "#ff00e7"));
+   // players.push(player(10, 750,50, Math.random()*2, Math.random()*2, "red"));
     //players.push(player(10, 50, 650, Math.random()*2, Math.random()*2, "white"));
 }
 
@@ -174,6 +174,10 @@ var player = function(r, x, y, dx, dy, c){
 	var rvx = 1.0*x -1.0* pX;
 	var rvy = -1.0*(-1.0*y -1.0* pY);
 	var r = dist(rvx,0,rvy,0)
+	if (y - -1.0*pY > 0) 
+	    belowx = true
+	else
+	    belowx = false
 //	var theta = angler(rvx, rvy)
 	var theta = Math.atan2(rvy, rvx) // + Math.PI
 	console.log(Math.atan2(rvy,rvx),"atan")
@@ -189,10 +193,24 @@ var player = function(r, x, y, dx, dy, c){
 	    console.log(v,"speed")
 	    var dtheta = v / r;
 
-	    if ((y < pY && dx < 0) || (y > pY && dx > 0)){
+	    if (x-pX > 0 && dy<0 || x-pX < 0 && dy > 0) {
+		console.log(x)
+		console.log(pX, "REv px")
 		dtheta*=-1;
 	
 	    }
+	    if ((-1.0*y-pY > 0 && dx<0) || -1.0*y-pY <0 && dx >0) {
+		dtheta *= -1
+	    }
+
+	   /* if ((y-pY < 0 && dx > 0)) {
+		dtheta *= -1
+	    }*/
+/*
+	      
+
+	    if (dtheta <0)
+		dtheta*=-1*/
 	    console.log(dtheta,"dtheta")
 	    theta+=dtheta;
 
@@ -208,6 +226,15 @@ var player = function(r, x, y, dx, dy, c){
 
 	    dx = (tmpX - x) 
 	    dy = (tmpY - y) 
+	    /*if ( y - -1.0*pY < 0) {
+		if (belowx)
+		    dy *= -1.0
+		belowx = false
+	    }
+	    else
+		if (!belowx)
+		    dy *= -1.0
+		belowx = true*/ 
 	    console.log(dx, "dx")
 	    console.log(dy, "dy")
 	   // x = tmpX;
@@ -316,9 +343,9 @@ var collisions = function(player){
 
 makeLv1()
 var intervalID;
-var button = document.getElementById("p1")
-button.addEventListener("click",move)
-//intervalID = setInterval(move,5);
+//var button = document.getElementById("p1")
+//button.addEventListener("click",move)
+intervalID = setInterval(move,5);
 intervalID2 = setInterval(draw,5);
 var keydown = false;
 document.onkeydown = function(e){
